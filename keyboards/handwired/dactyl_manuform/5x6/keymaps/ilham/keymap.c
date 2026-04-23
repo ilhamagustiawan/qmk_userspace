@@ -12,12 +12,21 @@ enum layers {
 
 enum custom_keycodes {
     ALT_TAB = SAFE_RANGE,
-    TOG_MAC_LINUX, // Toggle between macOS and Linux
-    MY_COPY,       // Custom keycode for copy
-    MY_PASTE,      // Custom keycode for paste
-    MY_CUT,        // Custom keycode for cut
-    MY_CLOSE,      // Custom keycode for close
-    CMD_PAL,       // Custom keycode for command palette
+    OS_MODE_TOG,   // Toggle OS mode override
+    OA_COPY,       // OS-aware copy
+    OA_PASTE,      // OS-aware paste
+    OA_CUT,        // OS-aware cut
+    OA_CLOSE,      // OS-aware close
+    OA_CMD_PAL,    // OS-aware command palette
+    OA_SELECT_ALL, // OS-aware select all
+    OA_FIND,       // OS-aware find
+    OA_FIND_NEXT,  // OS-aware find next
+    OA_FIND_PREV,  // OS-aware find previous
+    OA_RELOAD,     // OS-aware reload
+    OA_SAVE,       // OS-aware save
+    OA_BOOKMARK,   // OS-aware bookmark
+    OA_FULLSCREEN, // OS-aware fullscreen
+    OA_HELP,       // OS-aware help
     LEADER_TMUX,   // custom keycode for leader key to activate tmux-like behavior
     BSPC_WORD,
     MY_NAV_LEFT,
@@ -46,19 +55,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(TERMINAL),  KC_A, KC_S, KC_D, KC_F, KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
             MO(NUMBER), MO(FUNCTION),                                                                   KC_LBRC, LT(MOUSE, KC_RBRC),
-        MO(CURSOR), KC_BSPC,                                                                   KC_SPC, MO(SYMBOL),
+        MO(CURSOR), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
         XXX, KC_ESC,                                                                             KC_ENT, QK_BOOT,
-        XXX, XXX,                                                                                XXX,  XXX
+        OS_MODE_TOG, XXX,                                                                                XXX,  XXX
     ),
 
   [CURSOR] = LAYOUT_5x6(
         _______,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______,   _______, C(KC_W), MY_COPY, MY_PASTE, TT(FUNCTION),                               BSPC_WORD,S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
+        KC_CAPS,   _______, C(KC_W), OA_COPY, OA_PASTE, OA_CUT,                                     BSPC_WORD,S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
         CAPS_WORD, ALT_TAB,  G(KC_TILD), TG(NUMBER), LEADER_TMUX, C(KC_G),                          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        KC_CAPS,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSM(MOD_HYPR),        KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
+        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSM(MOD_HYPR),        KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
                      _______, _______,                                                                     _______, _______,
                 _______,          _______,                                                                     _______, _______,
-        _______,          TOG_MAC_LINUX,                                                               _______, _______,
+        _______,          _______,                                                                 _______, _______,
         _______,          _______,                                                                     _______, _______
     ),
 
@@ -85,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, CMD_PAL, KC_PIPE,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, KC_PIPE,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
         KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           HYPR(KC_SPC), OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
              _______, _______,                                                                     _______, _______,
@@ -100,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, LEADER_TMUX, _______,                          KC_MINS, KC_4,   KC_5,   KC_6,   KC_PLUS, _______,
         _______, KC_RGUI, KC_RALT, KC_RCTL, KC_RSFT, _______,                              KC_0,    KC_1,   KC_2,   KC_3,   KC_SLSH, _______,
                  _______, QK_LLCK,                                                                      _______, _______,
-            _______, _______,                                                                             _______,_______,
+            KC_RGUI, KC_RCTL,                                                                             _______,_______,
             _______, _______,                                                                             _______,_______,
             _______, _______,                                                                             _______,_______
     ),
@@ -108,8 +117,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [FUNCTION] = LAYOUT_5x6(
         _______, C(KC_PGUP), C(KC_PGDN), _______, _______, _______,                               KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
-        _______, MY_CLOSE,G(KC_W), G(KC_E), G(KC_R), _______,                               _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  G(S(KC_SLSH)),
-        _______, G(KC_A), G(KC_S), G(KC_D), G(KC_F), _______,                               _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
+        _______, OA_CLOSE,OA_FIND, OA_FIND_NEXT, OA_RELOAD, _______,                            _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  OA_HELP,
+        _______, OA_SELECT_ALL, OA_SAVE, OA_BOOKMARK, OA_FULLSCREEN, _______,                    _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
         _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                               _______, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE,
              _______, _______,                                                                      KC_VOLD, KC_VOLU,
              A(KC_1), A(KC_2),                                                                     A(KC_7), A(KC_6),
@@ -165,21 +174,32 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QHOME_X:
-    case QHOME_Z:
+    // Longer tap window for shift home-row mods.
+    case QHOME_V:
+    case QHOME_M:
       return TAPPING_TERM + 15;
 
+    // Increase the tapping term a little for slower ring and pinky fingers.
+    case QHOME_Z:
     case QHOME_SCLN:
+    case QHOME_X:
     case QHOME_DOT:
     case QHOME_C:
-      return TAPPING_TERM + 10;
-
-    case QHOME_M:
-    case QHOME_V:
-      return TAPPING_TERM - 5;
+    case QHOME_COMM:
+      return TAPPING_TERM + 15;
 
     default:
       return TAPPING_TERM;
+  }
+}
+
+bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case QHOME_Z:
+    case QHOME_DOT:
+      return true;
+    default:
+      return false;
   }
 }
 
@@ -248,6 +268,22 @@ bool get_speculative_hold(uint16_t keycode, keyrecord_t* record) {
 
 bool is_alt_tab_active = false;
 bool is_mac_mode = true;  // Initialize to true for macOS
+
+bool process_detected_host_os_user(os_variant_t detected_os) {
+  switch (detected_os) {
+    case OS_MACOS:
+    case OS_IOS:
+      is_mac_mode = true;
+      break;
+    case OS_WINDOWS:
+    case OS_LINUX:
+      is_mac_mode = false;
+      break;
+    case OS_UNSURE:
+      return true;
+  }
+  return true;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -326,38 +362,92 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     } return false;
 
-    case TOG_MAC_LINUX:
+    case OS_MODE_TOG:
       if (record->event.pressed) {
-        // Toggle between macOS and Linux modes
+        // Toggle between macOS and Windows/Linux modes
         is_mac_mode = !is_mac_mode;
       }
       return false; // Skip all further processing of this key
 
-    case CMD_PAL:
+    case OA_CMD_PAL:
         if (record->event.pressed) {
             tap_code16(is_mac_mode ? LGUI(KC_SPC) : LALT(KC_SPC));
         }
         return false; // Skip all further processing of this key
 
-    case MY_COPY:
+    case OA_SELECT_ALL:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_A) : LCTL(KC_A));
+        }
+        return false;
+
+    case OA_FIND:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_F) : LCTL(KC_F));
+        }
+        return false;
+
+    case OA_FIND_NEXT:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_G) : KC_F3);
+        }
+        return false;
+
+    case OA_FIND_PREV:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(S(KC_G)) : LSFT(KC_F3));
+        }
+        return false;
+
+    case OA_RELOAD:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_R) : LCTL(KC_R));
+        }
+        return false;
+
+    case OA_SAVE:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_S) : LCTL(KC_S));
+        }
+        return false;
+
+    case OA_BOOKMARK:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(KC_D) : LCTL(KC_D));
+        }
+        return false;
+
+    case OA_FULLSCREEN:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(LCTL(KC_F)) : KC_F11);
+        }
+        return false;
+
+    case OA_HELP:
+        if (record->event.pressed) {
+            tap_code16(is_mac_mode ? LGUI(S(KC_SLSH)) : KC_F1);
+        }
+        return false;
+
+    case OA_COPY:
         if (record->event.pressed) {
             tap_code16(is_mac_mode ? LGUI(KC_C) : LCTL(KC_C));
         }
         return false;
 
-    case MY_PASTE:
+    case OA_PASTE:
         if (record->event.pressed) {
             tap_code16(is_mac_mode ? LGUI(KC_V) : LCTL(KC_V));
         }
         return false;
 
-    case MY_CUT:
+    case OA_CUT:
         if (record->event.pressed) {
             tap_code16(is_mac_mode ? LGUI(KC_X) : LCTL(KC_X));
         }
         return false; // Skip all further processing of this key
 
-    case MY_CLOSE:
+    case OA_CLOSE:
         if (record->event.pressed) {
             if (is_mac_mode) {
                 tap_code16(LGUI(KC_Q));
@@ -391,8 +481,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // macOS: ctrl + Left Arrow
                 tap_code16(LCTL(KC_LEFT));
             } else {
-                 // windows: gui + ctrl + Left Arrow
-                tap_code16(LGUI(LCTL(KC_LEFT)));
+                 // Linux: ctrl + Left Arrow
+                tap_code16(LCTL(KC_LEFT));
             }
        }
        return false; // Skip all further processing of this key
@@ -403,8 +493,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // macOS: ctrl + Right Arrow
                 tap_code16(LCTL(KC_RGHT));
             } else {
-                 // windows: gui + ctrl + Right Arrow
-                tap_code16(LGUI(LCTL(KC_RGHT)));
+                 // Linux: ctrl + Right Arrow
+                tap_code16(LCTL(KC_RGHT));
             }
        }
        return false; // Skip all further processing of this key
