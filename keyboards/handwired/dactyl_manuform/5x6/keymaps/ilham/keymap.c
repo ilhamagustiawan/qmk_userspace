@@ -47,6 +47,10 @@ enum custom_keycodes {
 
 #define CAPS_WORD QK_CAPS_WORD_TOGGLE
 
+#define LEFT_SHIFT_HOME_TAPPING_TERM (TAPPING_TERM - 70)
+#define RIGHT_SHIFT_HOME_TAPPING_TERM (TAPPING_TERM - 30)
+#define OUTER_HOME_TAPPING_TERM (TAPPING_TERM + 15)
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
@@ -174,10 +178,11 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // Longer tap window for shift home-row mods.
+    // Shift home-row mods should chord quickly.
     case QHOME_V:
+      return LEFT_SHIFT_HOME_TAPPING_TERM;
     case QHOME_M:
-      return TAPPING_TERM + 15;
+      return RIGHT_SHIFT_HOME_TAPPING_TERM;
 
     // Increase the tapping term a little for slower ring and pinky fingers.
     case QHOME_Z:
@@ -186,7 +191,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case QHOME_DOT:
     case QHOME_C:
     case QHOME_COMM:
-      return TAPPING_TERM + 15;
+      return OUTER_HOME_TAPPING_TERM;
 
     default:
       return TAPPING_TERM;
@@ -206,7 +211,6 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
   switch (keycode) {
     case QHOME_X:
-    case QHOME_V:
       return QUICK_TAP_TERM;  // Enable key repeating.
     default:
       return 0;  // Otherwise, force hold and disable key repeating.
@@ -247,8 +251,6 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
       case QHOME_SCLN:   // GUI
       case QHOME_X:      // Alt
       case QHOME_DOT:    // Alt
-      case QHOME_V:      // Shift
-      case QHOME_M:      // Shift
         return FLOW_TAP_TERM;
 
       case QHOME_C:      // Control
