@@ -3,7 +3,6 @@ LTO_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 REPEAT_KEY_ENABLE = yes
 LAYER_LOCK_ENABLE = yes
-OS_DETECTION_ENABLE = yes
 
 # https://docs.qmk.fm/#/feature_caps_word?id=caps-word
 CAPS_WORD_ENABLE = yes

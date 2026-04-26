@@ -47,9 +47,6 @@ enum custom_keycodes {
 
 #define CAPS_WORD QK_CAPS_WORD_TOGGLE
 
-#define LEFT_SHIFT_HOME_TAPPING_TERM (TAPPING_TERM - 70)
-#define RIGHT_SHIFT_HOME_TAPPING_TERM (TAPPING_TERM - 30)
-#define OUTER_HOME_TAPPING_TERM (TAPPING_TERM + 15)
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -60,8 +57,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
             MO(NUMBER), MO(FUNCTION),                                                                   KC_LBRC, LT(MOUSE, KC_RBRC),
         MO(CURSOR), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
-        XXX, KC_ESC,                                                                             KC_ENT, QK_BOOT,
-        OS_MODE_TOG, XXX,                                                                                XXX,  XXX
+        OS_MODE_TOG, KC_ESC,                                                                             KC_ENT, QK_BOOT,
+        XXX, XXX,                                                                                XXX,  XXX
     ),
 
   [CURSOR] = LAYOUT_5x6(
@@ -178,25 +175,36 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // Shift home-row mods should chord quickly.
     case QHOME_V:
-      return LEFT_SHIFT_HOME_TAPPING_TERM;
     case QHOME_M:
-      return RIGHT_SHIFT_HOME_TAPPING_TERM;
-
-    // Increase the tapping term a little for slower ring and pinky fingers.
-    case QHOME_Z:
-    case QHOME_SCLN:
-    case QHOME_X:
-    case QHOME_DOT:
-    case QHOME_C:
-    case QHOME_COMM:
-      return OUTER_HOME_TAPPING_TERM;
-
+      return TAPPING_TERM - 45;
     default:
       return TAPPING_TERM;
   }
 }
+
+#ifdef FLOW_TAP_TERM
+uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record,
+                           uint16_t prev_keycode) {
+  // Only apply Flow Tap when following a letter key without hotkey mods.
+  if (get_tap_keycode(prev_keycode) <= KC_Z &&
+      (get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) == 0) {
+    switch (keycode) {
+      case QHOME_Z:
+      case QHOME_X:
+      case QHOME_C:
+      case QHOME_SCLN:
+      case QHOME_DOT:
+      case QHOME_COMM:
+        return FLOW_TAP_TERM;
+      case QHOME_V:
+      case QHOME_M:
+        return FLOW_TAP_TERM - 25;
+    }
+  }
+  return 0;
+}
+#endif  // FLOW_TAP_TERM
 
 bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -239,29 +247,6 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
 }
 #endif  // CHORDAL_HOLD
 
-#ifdef FLOW_TAP_TERM
-uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
-                           uint16_t prev_keycode) {
-  // Only apply Flow Tap when following a letter key, and not hotkeys.
-  if (get_tap_keycode(prev_keycode) <= KC_Z &&
-      (get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) == 0) {
-    switch (keycode) {
-      // Bottom row mods - standard timing
-      case QHOME_Z:      // GUI
-      case QHOME_SCLN:   // GUI
-      case QHOME_X:      // Alt
-      case QHOME_DOT:    // Alt
-        return FLOW_TAP_TERM;
-
-      case QHOME_C:      // Control
-      case QHOME_COMM:   // Control
-        return FLOW_TAP_TERM - 20;
-    }
-  }
-  return 0;  // Disable Flow Tap otherwise.
-}
-#endif  // FLOW_TAP_TERM
-
 #ifdef SPECULATIVE_HOLD
 bool get_speculative_hold(uint16_t keycode, keyrecord_t* record) {
   return true;  // Enable for all mods.
@@ -269,23 +254,7 @@ bool get_speculative_hold(uint16_t keycode, keyrecord_t* record) {
 #endif  // SPECULATIVE_HOLD
 
 bool is_alt_tab_active = false;
-bool is_mac_mode = true;  // Initialize to true for macOS
-
-bool process_detected_host_os_user(os_variant_t detected_os) {
-  switch (detected_os) {
-    case OS_MACOS:
-    case OS_IOS:
-      is_mac_mode = true;
-      break;
-    case OS_WINDOWS:
-    case OS_LINUX:
-      is_mac_mode = false;
-      break;
-    case OS_UNSURE:
-      return true;
-  }
-  return true;
-}
+bool is_mac_mode = true;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -334,35 +303,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return true;
-    case KC_BSPC: {
-      static uint16_t registered_key = KC_NO;
-      if (record->event.pressed) {  // On key press.
-        const uint8_t mods = get_mods();
-#ifndef NO_ACTION_ONESHOT
-        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
-#else
-        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
-#endif  // NO_ACTION_ONESHOT
-        if (shift_mods) {  // At least one shift key is held.
-          registered_key = KC_DEL;
-          // If one shift is held, clear it from the mods. But if both
-          // shifts are held, leave as is to send Shift + Del.
-          if (shift_mods != MOD_MASK_SHIFT) {
-#ifndef NO_ACTION_ONESHOT
-            del_oneshot_mods(MOD_MASK_SHIFT);
-#endif  // NO_ACTION_ONESHOT
-            unregister_mods(MOD_MASK_SHIFT);
-          }
-        } else {
-          registered_key = KC_BSPC;
-        }
-
-        register_code(registered_key);
-        set_mods(mods);
-      } else {  // On key release.
-        unregister_code(registered_key);
-      }
-    } return false;
 
     case OS_MODE_TOG:
       if (record->event.pressed) {
