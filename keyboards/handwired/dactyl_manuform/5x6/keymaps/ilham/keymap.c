@@ -177,7 +177,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QHOME_V:
     case QHOME_M:
-      return TAPPING_TERM - 45;
+      // Shift mod-taps benefit from a little more time so opposite-hand
+      // capitals like V+I don't accidentally become "vi".
+      return TAPPING_TERM + 35;
     default:
       return TAPPING_TERM;
   }
@@ -205,25 +207,6 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record,
   return 0;
 }
 #endif  // FLOW_TAP_TERM
-
-bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case QHOME_Z:
-    case QHOME_DOT:
-      return true;
-    default:
-      return false;
-  }
-}
-
-uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
-  switch (keycode) {
-    case QHOME_X:
-      return QUICK_TAP_TERM;  // Enable key repeating.
-    default:
-      return 0;  // Otherwise, force hold and disable key repeating.
-  }
-}
 
 #ifdef CHORDAL_HOLD
 bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
