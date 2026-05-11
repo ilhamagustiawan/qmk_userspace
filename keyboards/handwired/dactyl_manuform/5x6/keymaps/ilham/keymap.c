@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
         KC_CAPS,   _______, C(KC_W), OA_COPY, OA_PASTE, OA_CUT,                                     BSPC_WORD,S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
         CAPS_WORD, ALT_TAB,  G(KC_TILD), TG(NUMBER), LEADER_TMUX, C(KC_G),                          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSM(MOD_HYPR),        KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
+        _______,  KC_LGUI,   KC_LALT,   KC_LCTL,   OSM(MOD_LSFT), KC_HYPR,                          KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
                      _______, _______,                                                                     _______, _______,
                 _______,          _______,                                                                     _______, _______,
         _______,          _______,                                                                 _______, _______,
@@ -179,7 +179,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case QHOME_M:
       // Shift mod-taps benefit from a little more time so opposite-hand
       // capitals like V+I don't accidentally become "vi".
-      return TAPPING_TERM + 35;
+      return TAPPING_TERM + 20;
     default:
       return TAPPING_TERM;
   }
