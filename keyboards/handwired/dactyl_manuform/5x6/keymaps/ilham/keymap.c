@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
             MO(NUMBER), MO(FUNCTION),                                                                   KC_LBRC, LT(MOUSE, KC_RBRC),
         MO(CURSOR), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
-        OS_MODE_TOG, KC_ESC,                                                                             KC_ENT, QK_BOOT,
+        XXX, KC_ESC,                                                                             KC_ENT, QK_BOOT,
         XXX, XXX,                                                                                XXX,  XXX
     ),
 
@@ -100,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           HYPR(KC_SPC), OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
              _______, _______,                                                                     _______, _______,
                 _______, _______,                                                                  _______, _______,
-                _______, _______,                                                                  _______, _______,
+                OS_MODE_TOG, _______,                                                                  _______, _______,
                 _______, _______,                                                                  _______, _______
     ),
 
@@ -133,8 +133,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, MS_LEFT, MS_DOWN, MS_RGHT, _______,                               _______, MS_ACL0, MS_ACL1, MS_ACL2, _______, _______,
         _______, _______, _______, MS_WHLD, MS_WHLU, _______,                               _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
         MS_BTN4, MS_BTN5,                                                                                           _______, _______,
-        _______, MS_BTN1,                                                                                           _______, _______,
-        MS_BTN3, MS_BTN2,                                                                                           _______, _______,
+        MS_BTN1, MS_BTN2,                                                                                           _______, _______,
+        _______, MS_BTN3,                                                                                           _______, _______,
         _______, _______,                                                                                           _______, _______
     ),
 
