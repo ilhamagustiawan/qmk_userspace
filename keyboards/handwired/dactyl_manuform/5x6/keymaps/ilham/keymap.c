@@ -2,12 +2,12 @@
 
 enum layers {
     BASE,
-    CURSOR,
+    NAV,
     NUMBER,
     FUNCTION,
     SYMBOL,
     MOUSE,
-    TERMINAL,
+    NAVWIN,
 };
 
 enum custom_keycodes {
@@ -28,10 +28,20 @@ enum custom_keycodes {
     OA_FULLSCREEN, // OS-aware fullscreen
     OA_HELP,       // OS-aware help
     LEADER_TMUX,   // custom keycode for leader key to activate tmux-like behavior
-    BSPC_WORD,
+    TMUX_PREV,     // tmux previous window (C-F p)
+    TMUX_NEXT,     // tmux next window (C-F n)
+    KC_DWRD,
     MY_NAV_LEFT,
     MY_NAV_RIGHT,
     RALT_RSFT,
+    OA_UNDO,       // OS-aware undo
+    OA_REDO,       // OS-aware redo
+    OA_MAKE_LINK,  // OS-aware make link / VSCode evaluate (shift)
+    OA_NEW_TAB,    // OS-aware new tab
+    CLS_WIN,       // Close window (Cmd+W / Ctrl+W)
+    SW_WIN,        // Window switcher within app (Cmd+`)
+    PRV_TAB,       // Previous tab (Ctrl+Shift+Tab)
+    NXT_TAB,       // Next tab (Ctrl+Tab)
 };
 
 // Home row mods for QWERTY layer for windows and linux
@@ -53,46 +63,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
         KC_EQL,        KC_1, KC_2, KC_3, KC_4, KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB,        KC_Q, KC_W, KC_E, KC_R, KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        MO(TERMINAL),  KC_A, KC_S, KC_D, KC_F, KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        MO(NAVWIN),  KC_A, KC_S, KC_D, KC_F, KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
-            MO(NUMBER), MO(FUNCTION),                                                                   KC_LBRC, LT(MOUSE, KC_RBRC),
-        MO(CURSOR), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
+            MO(NUMBER), MO(FUNCTION),                                                               LT(MOUSE, KC_LBRC), KC_RBRC,
+        MO(NAV), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
         XXX, KC_ESC,                                                                             KC_ENT, QK_BOOT,
         XXX, XXX,                                                                                XXX,  XXX
     ),
 
-  [CURSOR] = LAYOUT_5x6(
-        _______,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        KC_CAPS,   _______, C(KC_W), OA_COPY, OA_PASTE, OA_CUT,                                     BSPC_WORD,S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
-        CAPS_WORD, ALT_TAB,  G(KC_TILD), TG(NUMBER), LEADER_TMUX, C(KC_G),                          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______,  KC_LGUI,   KC_LALT,   KC_LCTL,   OSM(MOD_LSFT), KC_HYPR,                          KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
-                     _______, _______,                                                                     _______, _______,
+  [NAV] = LAYOUT_5x6(
+        _______,   _______,  _______,  _______,  OA_REDO, _______,                                  _______, _______, _______, _______, _______, _______,
+        KC_CAPS,   _______, CLS_WIN,  OA_COPY, OA_PASTE, OA_CUT,                                    KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
+        CAPS_WORD, ALT_TAB,  SW_WIN,  PRV_TAB, LEADER_TMUX, NXT_TAB,                                KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
+        _______,   OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSL(NAVWIN),         KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
+                     KC_ENT, KC_SPC,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
                 _______,          _______,                                                                     _______, _______,
         _______,          _______,                                                                 _______, _______,
         _______,          _______,                                                                     _______, _______
     ),
 
-  /*
-   * Symbol Layer
-   *
-   * ,-------------------------------------------.                             ,-------------------------------------------.
-   * |  `   |  +   |  *   |  =   |  \   |  ~   |                               |      |      |      |      |      |      |
-   * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
-   * |  &   |  !   |  @   |  {   |  }   |  ?   |                               | Bspc | S-Tab| Tab  | ATab | Cmd  |  |   |
-   * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
-   * |  #   |  ^   |  -   |  (   |  )   |  $   |                               | Left | Down |  Up  |Right |  :   |      |
-   * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
-   * |  '   |  "   |  _   |  [   |  ]   |  %   |                               |A+RSft| RSft | RCtl | RAlt | RGui |      |
-   * `-------------+------+------.                               .------+------+------+-------------'
-   *               |      |      |                               |      |      |
-   *               `------+------+                               +------+------'
-   *                      |      |                               |      |
-   *                      `------'                               `------'
-   *                      |      |                               |      |
-   *                      `------'                               `------'
-   *                      |      |                               |      |
-   *                      `------'                               `------'
-   */
+  [NAVWIN] = LAYOUT_5x6(
+        _______,  _______,  _______,  _______,  _______, _______,                                     _______, _______, _______, _______, _______, _______,
+        _______,  HYPR(KC_Q),    HYPR(KC_W), HYPR(KC_F), HYPR(KC_P), HYPR(KC_B),                       A(KC_J), A(KC_7), A(KC_8), A(KC_9), A(KC_QUOT), _______,
+        _______,  HYPR(KC_A),    HYPR(KC_S), HYPR(KC_D), HYPR(KC_F), HYPR(KC_V),                       A(KC_M), A(KC_4), A(KC_5), A(KC_6),    A(KC_O), _______,
+        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                 A(KC_K), A(KC_1), A(KC_2), A(KC_3), A(KC_SLSH), _______,
+                    _______, _______,                                                       _______, _______,
+              _______,          _______,                                                       _______, _______,
+              _______,          _______,                                                       _______, _______,
+              _______,          _______,                                                       _______, _______
+    ),
+
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
         KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, KC_PIPE,
@@ -137,17 +137,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, MS_BTN3,                                                                                           _______, _______,
         _______, _______,                                                                                           _______, _______
     ),
-
-  [TERMINAL] = LAYOUT_5x6(
-        _______, _______, _______, _______, _______,  _______,                                  _______, _______, _______, _______, _______, _______,
-        _______, _______, C(KC_W), C(KC_E), C(KC_R),  C(KC_T),                                  _______, _______, _______, _______, C(KC_P), _______,
-        _______, C(KC_A), C(KC_S), C(KC_D), C(KC_F),  _______,                                  C(KC_H), C(KC_J), C(KC_K), C(KC_L), _______, _______,
-        _______, _______, C(KC_X), C(KC_C), C(KC_V), _______,                                   C(KC_N), _______, _______, _______, _______, _______,
-                    _______,   _______,                                                                     MY_NAV_LEFT, MY_NAV_RIGHT,
-        C(KC_TAB), C(S(KC_TAB)),                                                                                     _______, _______,
-        _______,   _______,                                                                                     _______, _______,
-        _______,   _______,                                                                                     _______, _______
-    ),
 };
 
 
@@ -177,8 +166,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QHOME_V:
     case QHOME_M:
-      // Shift mod-taps benefit from a little more time so opposite-hand
-      // capitals like V+I don't accidentally become "vi".
       return TAPPING_TERM + 20;
     default:
       return TAPPING_TERM;
@@ -237,7 +224,19 @@ bool get_speculative_hold(uint16_t keycode, keyrecord_t* record) {
 #endif  // SPECULATIVE_HOLD
 
 bool is_alt_tab_active = false;
+bool is_sw_win_active = false;
+bool is_tab_nav_active = false;
 bool is_mac_mode = true;
+
+// Sends `mac_code` on macOS, `win_code` on Windows.
+void send_mac_or_win(uint16_t mac_code, uint16_t win_code, bool is_pressed) {
+    uint16_t code = is_mac_mode ? mac_code : win_code;
+    if (is_pressed) {
+        register_code16(code);
+    } else {
+        unregister_code16(code);
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -268,6 +267,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           is_alt_tab_active = false;
           return false;
         }
+        if (is_sw_win_active) {
+          unregister_code(KC_LGUI);
+          is_sw_win_active = false;
+          return false;
+        }
+        if (is_tab_nav_active) {
+          unregister_code(KC_LCTL);
+          is_tab_nav_active = false;
+          return false;
+        }
       }
       return true;
 
@@ -283,6 +292,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 is_alt_tab_active = false;
                 tap_code(KC_ESCAPE); // Send an actual ESC key press to the OS
                 return false; // We handled it.
+            }
+            if (is_sw_win_active) {
+                unregister_code(KC_LGUI);
+                unregister_code(KC_GRV);
+                is_sw_win_active = false;
+                return false;
+            }
+            if (is_tab_nav_active) {
+                unregister_code(KC_LCTL);
+                is_tab_nav_active = false;
+                return false;
             }
         }
         return true;
@@ -355,22 +375,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
 
     case OA_COPY:
-        if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_C) : LCTL(KC_C));
-        }
+        send_mac_or_win(G(KC_C), C(KC_C), record->event.pressed);
         return false;
 
     case OA_PASTE:
-        if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_V) : LCTL(KC_V));
-        }
+        send_mac_or_win(G(KC_V), C(KC_V), record->event.pressed);
         return false;
 
     case OA_CUT:
-        if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_X) : LCTL(KC_X));
-        }
-        return false; // Skip all further processing of this key
+        send_mac_or_win(G(KC_X), C(KC_X), record->event.pressed);
+        return false;
 
     case OA_CLOSE:
         if (record->event.pressed) {
@@ -382,17 +396,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false; // Skip all further processing of this key
 
-    case BSPC_WORD:
+    // Delete the previous word (hold to repeat)
+    case KC_DWRD: {
+        uint16_t kc = is_mac_mode ? A(KC_BSPC) : C(KC_BSPC);
         if (record->event.pressed) {
-            if (is_mac_mode) {
-                // Mac: Option + Backspace
-                tap_code16(LALT(KC_BSPC));
-            } else {
-                // Linux/Windows: Ctrl + Backspace
-                tap_code16(LCTL(KC_BSPC));
-            }
+            register_code16(kc);
+        } else {
+            unregister_code16(kc);
         }
-        return false; // Skip all further processing of this key
+        return false;
+    }
 
     case LEADER_TMUX:
         if (record->event.pressed) {
@@ -424,6 +437,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        }
        return false; // Skip all further processing of this key
 
+      case TMUX_PREV:
+          if (record->event.pressed) {
+              // Send Ctrl+F then p (tmux previous window)
+              register_code(KC_LCTL);
+              tap_code(KC_F);
+              unregister_code(KC_LCTL);
+              tap_code(KC_P);
+          }
+          return false;
+
+      case TMUX_NEXT:
+          if (record->event.pressed) {
+              // Send Ctrl+F then n (tmux next window)
+              register_code(KC_LCTL);
+              tap_code(KC_F);
+              unregister_code(KC_LCTL);
+              tap_code(KC_N);
+          }
+          return false;
+
+
     case RALT_RSFT:
         if (record->event.pressed) {
             register_code(KC_RALT);
@@ -434,13 +468,72 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
 
+    case OA_UNDO:
+        send_mac_or_win(G(KC_Z), C(KC_Z), record->event.pressed);
+        return false;
+
+    case OA_REDO:
+        send_mac_or_win(G(S(KC_Z)), C(KC_Y), record->event.pressed);
+        return false;
+
+    case OA_MAKE_LINK:
+        send_mac_or_win(G(KC_K), C(KC_K), record->event.pressed);
+        return false;
+
+    case OA_NEW_TAB:
+        send_mac_or_win(G(KC_T), C(KC_T), record->event.pressed);
+        return false;
+
+    case CLS_WIN:
+        send_mac_or_win(G(KC_W), C(KC_W), record->event.pressed);
+        return false;
+
+    case SW_WIN:
+        if (record->event.pressed) {
+            if (!is_sw_win_active) {
+                is_sw_win_active = true;
+                register_code(KC_LGUI);
+            }
+            register_code(KC_GRV);
+        } else {
+            unregister_code(KC_GRV);
+        }
+        return false;
+
+    case PRV_TAB:
+        if (record->event.pressed) {
+            if (!is_tab_nav_active) {
+                is_tab_nav_active = true;
+                register_code(KC_LCTL);
+            }
+            register_code(KC_LSFT);
+            register_code(KC_TAB);
+        } else {
+            unregister_code(KC_TAB);
+            unregister_code(KC_LSFT);
+        }
+        return false;
+
+    case NXT_TAB:
+        if (record->event.pressed) {
+            if (!is_tab_nav_active) {
+                is_tab_nav_active = true;
+                register_code(KC_LCTL);
+            }
+            register_code(KC_TAB);
+        } else {
+            unregister_code(KC_TAB);
+        }
+        return false;
+
     default:
       return true;
   }
 }
 
 void matrix_scan_user(void) {
-  if (IS_LAYER_OFF(CURSOR) && IS_LAYER_OFF(SYMBOL) && is_alt_tab_active) {
+  if (IS_LAYER_OFF(NAV)) {
+    if (IS_LAYER_OFF(SYMBOL) && is_alt_tab_active) {
       if (is_mac_mode) {
         unregister_code(KC_LGUI);
       } else {
@@ -448,4 +541,13 @@ void matrix_scan_user(void) {
       }
       is_alt_tab_active = false;
     }
+    if (is_sw_win_active) {
+      unregister_code(KC_LGUI);
+      is_sw_win_active = false;
+    }
+    if (is_tab_nav_active) {
+      unregister_code(KC_LCTL);
+      is_tab_nav_active = false;
+    }
+  }
 }
