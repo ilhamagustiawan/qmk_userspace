@@ -21,24 +21,18 @@ enum custom_keycodes {
     OA_SELECT_ALL, // OS-aware select all
     OA_FIND,       // OS-aware find
     OA_FIND_NEXT,  // OS-aware find next
-    OA_FIND_PREV,  // OS-aware find previous
     OA_RELOAD,     // OS-aware reload
     OA_SAVE,       // OS-aware save
     OA_BOOKMARK,   // OS-aware bookmark
     OA_FULLSCREEN, // OS-aware fullscreen
     OA_HELP,       // OS-aware help
     LEADER_TMUX,   // custom keycode for leader key to activate tmux-like behavior
-    TMUX_PREV,     // tmux previous window (C-F p)
-    TMUX_NEXT,     // tmux next window (C-F n)
     KC_DWRD,
     MY_NAV_LEFT,
     MY_NAV_RIGHT,
-    RALT_RSFT,
-    OA_UNDO,       // OS-aware undo
     OA_REDO,       // OS-aware redo
-    OA_MAKE_LINK,  // OS-aware make link / VSCode evaluate (shift)
     OA_NEW_TAB,    // OS-aware new tab
-    CLS_WIN,       // Close window (Cmd+W / Ctrl+W)
+    OA_CLOSE_WIN,  // Close window (Cmd+W / Ctrl+W)
     SW_WIN,        // Window switcher within app (Cmd+`)
     PRV_TAB,       // Previous tab (Ctrl+Shift+Tab)
     NXT_TAB,       // Next tab (Ctrl+Tab)
@@ -61,21 +55,21 @@ enum custom_keycodes {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
-        KC_EQL,        KC_1, KC_2, KC_3, KC_4, KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
-        KC_TAB,        KC_Q, KC_W, KC_E, KC_R, KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        MO(NAVWIN),  KC_A, KC_S, KC_D, KC_F, KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
-        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
-            MO(NUMBER), MO(FUNCTION),                                                               LT(MOUSE, KC_LBRC), KC_RBRC,
-        MO(NAV), KC_BSPC,                                                                     KC_SPC, MO(SYMBOL),
+        KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
+        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
+        MO(NAVWIN),  KC_A, KC_S, KC_D, KC_F, KC_G,                           KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,              KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
+            MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
+        MO(NAV), LT(MOUSE,KC_BSPC),                                                              KC_SPC, MO(SYMBOL),
         XXX, KC_ESC,                                                                             KC_ENT, QK_BOOT,
-        XXX, XXX,                                                                                XXX,  XXX
+        XXX, OSM(MOD_LSFT),                                                                      HYPR(KC_SPC),  XXX
     ),
 
   [NAV] = LAYOUT_5x6(
-        _______,   _______,  _______,  _______,  OA_REDO, _______,                                  _______, _______, _______, _______, _______, _______,
-        KC_CAPS,   _______, CLS_WIN,  OA_COPY, OA_PASTE, OA_CUT,                                    KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
-        CAPS_WORD, ALT_TAB,  SW_WIN,  PRV_TAB, LEADER_TMUX, NXT_TAB,                                KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______,   OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSL(NAVWIN),         KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
+        _______,   _______,  _______,  _______,  OA_REDO, _______,                                    _______, _______, _______, _______, _______, _______,
+        KC_CAPS,   _______,  C(KC_W),  OA_COPY, OA_PASTE, OA_CUT,                                     KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
+        CAPS_WORD, ALT_TAB,  SW_WIN,  PRV_TAB, LEADER_TMUX, NXT_TAB,                                  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
+        OSL(NAVWIN),   OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSL(FUNCTION),         KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
                      KC_ENT, KC_SPC,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
                 _______,          _______,                                                                     _______, _______,
         _______,          _______,                                                                 _______, _______,
@@ -86,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______, _______,                                     _______, _______, _______, _______, _______, _______,
         _______,  HYPR(KC_Q),    HYPR(KC_W), HYPR(KC_F), HYPR(KC_P), HYPR(KC_B),                       A(KC_J), A(KC_7), A(KC_8), A(KC_9), A(KC_QUOT), _______,
         _______,  HYPR(KC_A),    HYPR(KC_S), HYPR(KC_D), HYPR(KC_F), HYPR(KC_V),                       A(KC_M), A(KC_4), A(KC_5), A(KC_6),    A(KC_O), _______,
-        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                 A(KC_K), A(KC_1), A(KC_2), A(KC_3), A(KC_SLSH), _______,
+        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                 A(KC_0), A(KC_1), A(KC_2), A(KC_3), A(KC_SLSH), _______,
                     _______, _______,                                                       _______, _______,
               _______,          _______,                                                       _______, _______,
               _______,          _______,                                                       _______, _______,
@@ -94,12 +88,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
   [SYMBOL] = LAYOUT_5x6(
-        KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, KC_PIPE,
+        KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, G(A(KC_SPC)),
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, _______,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
-        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           HYPR(KC_SPC), OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
+        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           _______, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
              _______, _______,                                                                     _______, _______,
-                _______, _______,                                                                  _______, _______,
+                _______, KC_DEL,                                                                  _______, _______,
                 OS_MODE_TOG, _______,                                                                  _______, _______,
                 _______, _______,                                                                  _______, _______
     ),
@@ -117,10 +111,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [FUNCTION] = LAYOUT_5x6(
-        _______, C(KC_PGUP), C(KC_PGDN), _______, _______, _______,                               KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
-        _______, OA_CLOSE,OA_FIND, OA_FIND_NEXT, OA_RELOAD, _______,                            _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  OA_HELP,
-        _______, OA_SELECT_ALL, OA_SAVE, OA_BOOKMARK, OA_FULLSCREEN, _______,                    _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
-        _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                               _______, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE,
+        _______, C(KC_PGUP), C(KC_PGDN), _______, _______, _______,                             KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
+        _______, OA_CLOSE, OA_CLOSE_WIN, OA_FIND_NEXT, OA_RELOAD, OA_NEW_TAB,                            _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  OA_HELP,
+        _______, OA_SELECT_ALL, OA_SAVE, OA_BOOKMARK, OA_FIND, OA_FULLSCREEN,                   _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
+        _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                   _______, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE,
              _______, _______,                                                                      KC_VOLD, KC_VOLU,
              A(KC_1), A(KC_2),                                                                     A(KC_7), A(KC_6),
              _______, A(KC_3),                                                                     A(KC_8), _______,
@@ -129,12 +123,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [MOUSE] = LAYOUT_5x6(
         _______, _______, _______, _______, _______, _______,                               _______, _______, _______, _______, _______, _______,
-        _______, _______, MS_WHLL, MS_UP,   MS_WHLR, _______,                               _______, _______, _______, _______, _______, _______,
-        _______, _______, MS_LEFT, MS_DOWN, MS_RGHT, _______,                               _______, MS_ACL0, MS_ACL1, MS_ACL2, _______, _______,
-        _______, _______, _______, MS_WHLD, MS_WHLU, _______,                               _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
-        MS_BTN4, MS_BTN5,                                                                                           _______, _______,
-        MS_BTN1, MS_BTN2,                                                                                           _______, _______,
-        _______, MS_BTN3,                                                                                           _______, _______,
+        _______, _______, _______, _______, _______, _______,                               _______, _______, _______, _______, _______, _______,
+        _______, _______, MS_BTN2, MS_BTN3, MS_BTN1, LSFT(MS_BTN1),                         _______, MS_ACL0, MS_ACL1, MS_ACL2, _______, _______,
+        _______, _______, _______, MS_BTN4, MS_BTN5, LGUI(MS_BTN1),                         _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
+        _______, _______,                                                                                           _______, _______,
+        _______, _______,                                                                                           _______, _______,
+        _______, _______,                                                                                           _______, _______,
         _______, _______,                                                                                           _______, _______
     ),
 };
@@ -228,7 +222,7 @@ bool is_sw_win_active = false;
 bool is_tab_nav_active = false;
 bool is_mac_mode = true;
 
-// Sends `mac_code` on macOS, `win_code` on Windows.
+// Sends `mac_code` on macOS, `win_code` on Windows (register/unregister).
 void send_mac_or_win(uint16_t mac_code, uint16_t win_code, bool is_pressed) {
     uint16_t code = is_mac_mode ? mac_code : win_code;
     if (is_pressed) {
@@ -236,6 +230,11 @@ void send_mac_or_win(uint16_t mac_code, uint16_t win_code, bool is_pressed) {
     } else {
         unregister_code16(code);
     }
+}
+
+// Taps `mac_code` on macOS, `win_code` on Windows (one-shot).
+void tap_mac_or_win(uint16_t mac_code, uint16_t win_code) {
+    tap_code16(is_mac_mode ? mac_code : win_code);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -316,61 +315,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case OA_CMD_PAL:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_SPC) : LALT(KC_SPC));
+            tap_mac_or_win(G(KC_SPC), A(KC_SPC));
         }
         return false; // Skip all further processing of this key
 
     case OA_SELECT_ALL:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_A) : LCTL(KC_A));
+            tap_mac_or_win(G(KC_A), C(KC_A));
         }
         return false;
 
     case OA_FIND:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_F) : LCTL(KC_F));
+            tap_mac_or_win(G(KC_F), C(KC_F));
         }
         return false;
 
     case OA_FIND_NEXT:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_G) : KC_F3);
-        }
-        return false;
-
-    case OA_FIND_PREV:
-        if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(S(KC_G)) : LSFT(KC_F3));
+            tap_mac_or_win(G(KC_G), KC_F3);
         }
         return false;
 
     case OA_RELOAD:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_R) : LCTL(KC_R));
+            tap_mac_or_win(G(KC_R), C(KC_R));
         }
         return false;
 
     case OA_SAVE:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_S) : LCTL(KC_S));
+            tap_mac_or_win(G(KC_S), C(KC_S));
         }
         return false;
 
     case OA_BOOKMARK:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(KC_D) : LCTL(KC_D));
+            tap_mac_or_win(G(KC_D), C(KC_D));
         }
         return false;
 
     case OA_FULLSCREEN:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(LCTL(KC_F)) : KC_F11);
+            tap_mac_or_win(G(C(KC_F)), KC_F11);
         }
         return false;
 
     case OA_HELP:
         if (record->event.pressed) {
-            tap_code16(is_mac_mode ? LGUI(S(KC_SLSH)) : KC_F1);
+            tap_mac_or_win(G(S(KC_SLSH)), KC_F1);
         }
         return false;
 
@@ -388,24 +381,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case OA_CLOSE:
         if (record->event.pressed) {
-            if (is_mac_mode) {
-                tap_code16(LGUI(KC_Q));
-            } else {
-                tap_code16(LALT(KC_F4));
-            }
+            tap_mac_or_win(G(KC_Q), A(KC_F4));
         }
         return false; // Skip all further processing of this key
 
     // Delete the previous word (hold to repeat)
-    case KC_DWRD: {
-        uint16_t kc = is_mac_mode ? A(KC_BSPC) : C(KC_BSPC);
-        if (record->event.pressed) {
-            register_code16(kc);
-        } else {
-            unregister_code16(kc);
-        }
+    case KC_DWRD:
+        send_mac_or_win(A(KC_BSPC), C(KC_BSPC), record->event.pressed);
         return false;
-    }
 
     case LEADER_TMUX:
         if (record->event.pressed) {
@@ -415,76 +398,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case MY_NAV_LEFT:
         if (record->event.pressed) {
-            if (is_mac_mode) {
-                // macOS: ctrl + Left Arrow
-                tap_code16(LCTL(KC_LEFT));
-            } else {
-                 // Linux: ctrl + Left Arrow
-                tap_code16(LCTL(KC_LEFT));
-            }
-       }
-       return false; // Skip all further processing of this key
+            tap_code16(C(KC_LEFT));
+        }
+        return false; // Skip all further processing of this key
 
     case MY_NAV_RIGHT:
         if (record->event.pressed) {
-            if (is_mac_mode) {
-                // macOS: ctrl + Right Arrow
-                tap_code16(LCTL(KC_RGHT));
-            } else {
-                 // Linux: ctrl + Right Arrow
-                tap_code16(LCTL(KC_RGHT));
-            }
-       }
-       return false; // Skip all further processing of this key
-
-      case TMUX_PREV:
-          if (record->event.pressed) {
-              // Send Ctrl+F then p (tmux previous window)
-              register_code(KC_LCTL);
-              tap_code(KC_F);
-              unregister_code(KC_LCTL);
-              tap_code(KC_P);
-          }
-          return false;
-
-      case TMUX_NEXT:
-          if (record->event.pressed) {
-              // Send Ctrl+F then n (tmux next window)
-              register_code(KC_LCTL);
-              tap_code(KC_F);
-              unregister_code(KC_LCTL);
-              tap_code(KC_N);
-          }
-          return false;
-
-
-    case RALT_RSFT:
-        if (record->event.pressed) {
-            register_code(KC_RALT);
-            register_code(KC_RSFT);
-        } else {
-            unregister_code(KC_RSFT);
-            unregister_code(KC_RALT);
+            tap_code16(C(KC_RGHT));
         }
-        return false;
-
-    case OA_UNDO:
-        send_mac_or_win(G(KC_Z), C(KC_Z), record->event.pressed);
-        return false;
+        return false; // Skip all further processing of this key
 
     case OA_REDO:
         send_mac_or_win(G(S(KC_Z)), C(KC_Y), record->event.pressed);
-        return false;
-
-    case OA_MAKE_LINK:
-        send_mac_or_win(G(KC_K), C(KC_K), record->event.pressed);
         return false;
 
     case OA_NEW_TAB:
         send_mac_or_win(G(KC_T), C(KC_T), record->event.pressed);
         return false;
 
-    case CLS_WIN:
+    case OA_CLOSE_WIN:
         send_mac_or_win(G(KC_W), C(KC_W), record->event.pressed);
         return false;
 
