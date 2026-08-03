@@ -30,6 +30,7 @@ enum custom_keycodes {
     KC_DWRD,
     MY_NAV_LEFT,
     MY_NAV_RIGHT,
+    OA_UNDO,       // OS-aware undo
     OA_REDO,       // OS-aware redo
     OA_NEW_TAB,    // OS-aware new tab
     OA_CLOSE_WIN,  // Close window (Cmd+W / Ctrl+W)
@@ -66,14 +67,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
   [NAV] = LAYOUT_5x6(
-        _______,   _______,  _______,  _______,  OA_REDO, _______,                                    _______, _______, _______, _______, _______, _______,
-        KC_CAPS,   _______,  C(KC_W),  OA_COPY, OA_PASTE, OA_CUT,                                     KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
-        CAPS_WORD, ALT_TAB,  SW_WIN,  KC_F18, LEADER_TMUX, NXT_TAB,                                  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        OSL(NAVWIN),   OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), OSL(FUNCTION),         KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
-                     KC_ENT, KC_SPC,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
+        _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
+        KC_CAPS,  _______,  C(KC_W),  G(C(S(KC_I))), _______, _______,                               KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
+        CAPS_WORD, ALT_TAB, SW_WIN,  KC_LCTL, LEADER_TMUX, OSL(FUNCTION),                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
+        _______,  OA_UNDO, OA_CUT, OA_COPY, OA_PASTE, OSM(MOD_LGUI),                                 KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
+                     _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
                 _______,          _______,                                                                     _______, _______,
-        _______,          _______,                                                                 _______, _______,
-        _______,          _______,                                                                     _______, _______
+                _______,          _______,                                                                 _______, _______,
+                _______,          _______,                                                                     _______, _______
     ),
 
   [NAVWIN] = LAYOUT_5x6(
@@ -88,11 +89,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
   [SYMBOL] = LAYOUT_5x6(
-        KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, G(C(S(KC_I))),
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, HYPR(KC_7),
-        KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, HYPR(KC_8),
-        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           _______, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, HYPR(KC_9),
-             _______, _______,                                                                     _______, _______,
+        KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, _______,
+        KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
+        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           _______, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
+             _______, _______,                                                                     PRV_TAB, NXT_TAB,
                 _______, KC_DEL,                                                                  _______, _______,
                 OS_MODE_TOG, _______,                                                                  _______, _______,
                 _______, _______,                                                                  _______, _______
@@ -407,6 +408,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(C(KC_RGHT));
         }
         return false; // Skip all further processing of this key
+
+    case OA_UNDO:
+        send_mac_or_win(G(KC_Z), C(KC_Z), record->event.pressed);
+        return false;
 
     case OA_REDO:
         send_mac_or_win(G(S(KC_Z)), C(KC_Y), record->event.pressed);
