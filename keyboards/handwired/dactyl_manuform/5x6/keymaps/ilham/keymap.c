@@ -6,8 +6,9 @@ enum layers {
     NUMBER,
     FUNCTION,
     SYMBOL,
-    MOUSE,
     NAVWIN,
+    CMD_NUM,   // CMD+number layer
+    CTRL_NUM,  // CTRL+number layer
 };
 
 enum custom_keycodes {
@@ -45,6 +46,8 @@ enum custom_keycodes {
 #define QHOME_C LCTL_T(KC_C)
 #define QHOME_V LSFT_T(KC_V)
 
+#define G_BSPC LCMD_T(KC_BSPC)
+
 #define QHOME_M RSFT_T(KC_M)
 #define QHOME_COMM CTL_T(KC_COMM)
 #define QHOME_DOT ALT_T(KC_DOT)
@@ -58,20 +61,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
         KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                 KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                 KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        MO(NAVWIN),  KC_A, KC_S, KC_D, KC_F, KC_G,                            KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        KC_LCTL,  KC_A, KC_S, KC_D, KC_F, KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,              KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), KC_F18,
             MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
-        MO(NAV), LT(MOUSE,KC_BSPC),                                                              KC_SPC, MO(SYMBOL),
-        QK_BOOT, KC_ESC,                                                                             KC_ENT, QK_REP,
+       MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
+        QK_BOOT, KC_ESC,                                                                         KC_ENT, QK_REP,
         XXX, OSM(MOD_LSFT),                                                                      G(A(KC_SPC)),  XXX
     ),
 
   [NAV] = LAYOUT_5x6(
         _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
-        KC_CAPS,  _______,  C(KC_W),  G(C(S(KC_I))), _______, _______,                               KC_DWRD,  S(KC_TAB), KC_TAB, KC_DEL, _______, _______,
-        CAPS_WORD, ALT_TAB, SW_WIN,  KC_LCTL, LEADER_TMUX, OSL(FUNCTION),                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______,  OA_UNDO, OA_CUT, OA_COPY, OA_PASTE, OSM(MOD_LGUI),                                 KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
-                     _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
+        KC_CAPS,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), _______, _______,
+        CAPS_WORD, ALT_TAB, SW_WIN,  OSL(FUNCTION), LEADER_TMUX, MS_BTN4,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
+        _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), MS_BTN5,                KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
+             _______, _______,                                                                                  PRV_TAB, NXT_TAB,
                 _______,          _______,                                                                     _______, _______,
                 _______,          _______,                                                                 _______, _______,
                 _______,          _______,                                                                     _______, _______
@@ -79,9 +82,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [NAVWIN] = LAYOUT_5x6(
         _______,  _______,  _______,  _______,  _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______,  HYPR(KC_Q),    HYPR(KC_W), HYPR(KC_F), HYPR(KC_P), HYPR(KC_B),                       A(KC_J), A(KC_7), A(KC_8), A(KC_9), A(KC_QUOT), _______,
-        _______,  HYPR(KC_A),    HYPR(KC_S), HYPR(KC_D), HYPR(KC_F), HYPR(KC_V),                       A(KC_M), A(KC_4), A(KC_5), A(KC_6),    A(KC_O), _______,
-        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                 A(KC_0), A(KC_1), A(KC_2), A(KC_3), A(KC_SLSH), _______,
+        _______,  HYPR(KC_Q),    HYPR(KC_W), HYPR(KC_F), HYPR(KC_P), HYPR(KC_B),                      G(C(S(KC_I))), A(KC_7), A(KC_8), A(KC_9), A(KC_QUOT), _______,
+        _______,  HYPR(KC_A),    HYPR(KC_S), HYPR(KC_D), HYPR(KC_F), HYPR(KC_V),                      C(KC_M), C(KC_1), C(KC_2), C(KC_3),    A(KC_O), _______,
+        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                G(KC_0), G(KC_1), G(KC_2), G(KC_3), A(KC_SLSH), _______,
                     _______, _______,                                                       _______, _______,
               _______,          _______,                                                       _______, _______,
               _______,          _______,                                                       _______, _______,
@@ -90,26 +93,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, _______,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           OSL(NAVWIN), S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, _______,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
-        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           _______, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
-             _______, _______,                                                                     PRV_TAB, NXT_TAB,
-                _______, KC_DEL,                                                                  _______, _______,
+        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           QK_REP, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
+                _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
+                OSL(CMD_NUM), OSL(CMD_NUM),                                                                  _______, _______,
                 OS_MODE_TOG, _______,                                                                  _______, _______,
                 _______, _______,                                                                  _______, _______
     ),
 
   [NUMBER] = LAYOUT_5x6(
         _______, _______, _______, _______, _______, _______,                              _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,                              KC_X,    KC_7,   KC_8,   KC_9,   KC_ASTR, _______,
-        _______, _______, _______, _______, LEADER_TMUX, _______,                          KC_MINS, KC_4,   KC_5,   KC_6,   KC_PLUS, _______,
+        _______, _______, _______, _______, _______, _______,                              OSL(NAVWIN),    KC_7,   KC_8,   KC_9,   KC_ASTR, _______,
+        _______, _______, _______, _______, _______, _______,                              KC_MINS, KC_4,   KC_5,   KC_6,   KC_PLUS, _______,
         _______, KC_RGUI, KC_RALT, KC_RCTL, KC_RSFT, _______,                              KC_0,    KC_1,   KC_2,   KC_3,   KC_SLSH, _______,
                  _______, QK_LLCK,                                                                      _______, _______,
-            KC_RGUI, KC_RCTL,                                                                             _______,_______,
+         OSM(MOD_LGUI), OSM(MOD_LCTL),                                                                             _______,_______,
             _______, _______,                                                                             _______,_______,
             _______, _______,                                                                             _______,_______
     ),
-
 
   [FUNCTION] = LAYOUT_5x6(
         _______, C(KC_PGUP), C(KC_PGDN), _______, _______, _______,                             KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
@@ -120,17 +122,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              A(KC_1), A(KC_2),                                                                     A(KC_7), A(KC_6),
              _______, A(KC_3),                                                                     A(KC_8), _______,
              _______, _______,                                                                     _______, _______
-    ),
-
-  [MOUSE] = LAYOUT_5x6(
-        _______, _______, _______, _______, _______, _______,                               _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,                               _______, _______, _______, _______, _______, _______,
-        _______, _______, MS_BTN2, MS_BTN3, MS_BTN1, LSFT(MS_BTN1),                         _______, MS_ACL0, MS_ACL1, MS_ACL2, _______, _______,
-        _______, _______, OA_COPY, MS_BTN4, MS_BTN5, LGUI(MS_BTN1),                         _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
-        _______, _______,                                                                                           _______, _______,
-        _______, _______,                                                                                           _______, _______,
-        _______, _______,                                                                                           _______, _______,
-        _______, _______,                                                                                           _______, _______
     ),
 };
 
@@ -159,6 +150,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case G_BSPC:
+      return TAPPING_TERM - 20;
     case QHOME_V:
     case QHOME_M:
       return TAPPING_TERM + 20;
@@ -206,6 +199,10 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
                 return true;
             }
             break;
+
+        case G_BSPC:
+            // Always force Command via chordal hold.
+            return true;
     }
     // Otherwise defer to the opposite hands rule.
     return get_chordal_hold_default(tap_hold_record, other_record);
