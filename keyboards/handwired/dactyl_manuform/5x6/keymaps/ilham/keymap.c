@@ -59,12 +59,12 @@ enum custom_keycodes {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
-        KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                 KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
-        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                 KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        KC_LCTL,  KC_A, KC_S, KC_D, KC_F, KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
-        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,              KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), KC_F18,
+        KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                                KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
+        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                                KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
+        KC_LCTL,  KC_A, KC_S, KC_D, KC_F, KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
             MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
-       MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
+        MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
         QK_BOOT, KC_ESC,                                                                         KC_ENT, QK_REP,
         XXX, OSM(MOD_LSFT),                                                                      G(A(KC_SPC)),  XXX
     ),
@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           OSL(NAVWIN), S(KC_TAB), KC_TAB, ALT_TAB, OA_CMD_PAL, _______,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           OSL(NAVWIN), S(KC_TAB), KC_TAB, KC_F18, OA_CMD_PAL, _______,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
         KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           QK_REP, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
                 _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
@@ -105,8 +105,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [NUMBER] = LAYOUT_5x6(
         _______, _______, _______, _______, _______, _______,                              _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,                              OSL(NAVWIN),    KC_7,   KC_8,   KC_9,   KC_ASTR, _______,
-        _______, _______, _______, _______, _______, _______,                              KC_MINS, KC_4,   KC_5,   KC_6,   KC_PLUS, _______,
-        _______, KC_RGUI, KC_RALT, KC_RCTL, KC_RSFT, _______,                              KC_0,    KC_1,   KC_2,   KC_3,   KC_SLSH, _______,
+        _______, _______, _______, _______, LEADER_TMUX, _______,                              KC_MINS, KC_4,   KC_5,   KC_6,   KC_PLUS, _______,
+        _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), KC_RSFT, _______,                              KC_0,    KC_1,   KC_2,   KC_3,   KC_SLSH, _______,
                  _______, QK_LLCK,                                                                      _______, _______,
          OSM(MOD_LGUI), OSM(MOD_LCTL),                                                                             _______,_______,
             _______, _______,                                                                             _______,_______,
