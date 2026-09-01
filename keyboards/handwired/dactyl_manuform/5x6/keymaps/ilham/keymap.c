@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
         MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
         QK_BOOT, KC_ESC,                                                                         KC_ENT, QK_REP,
-        XXX, OSM(MOD_LSFT),                                                                      G(A(KC_SPC)), KC_F17
+        XXX, MS_BTN5,                                                                            G(A(KC_SPC)), KC_F17
     ),
 
   [NAV] = LAYOUT_5x6(
