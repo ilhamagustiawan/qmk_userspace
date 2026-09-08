@@ -62,16 +62,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                                KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                                KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
         KC_LCTL,  KC_A, KC_S, KC_D, KC_F, KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
-        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
+        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), OSM(MOD_RSFT),
             MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
         MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
         QK_BOOT, KC_ESC,                                                                         KC_ENT, QK_REP,
-        XXX, MS_BTN5,                                                                            G(A(KC_SPC)), KC_F17
+        XXX, MS_BTN5,                                                                            KC_F17, KC_F16
     ),
 
   [NAV] = LAYOUT_5x6(
         _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
-        KC_CAPS,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), _______, _______,
+        KC_CAPS,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
         CAPS_WORD, ALT_TAB, SW_WIN,  OSL(FUNCTION), LEADER_TMUX, MS_BTN4,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
         _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), MS_BTN5,                KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
              _______, _______,                                                                                  PRV_TAB, NXT_TAB,
@@ -93,9 +93,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           OSL(NAVWIN), S(KC_TAB), KC_TAB, KC_F18, OA_CMD_PAL, _______,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, KC_DEL, OA_CMD_PAL, _______,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
-        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           QK_REP, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
+        KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           KC_F18, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
                 _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
                 OSL(CMD_NUM), OSL(CMD_NUM),                                                                  _______, _______,
                 OS_MODE_TOG, _______,                                                                  _______, _______,
