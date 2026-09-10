@@ -6,6 +6,7 @@ enum layers {
     NUMBER,
     FUNCTION,
     SYMBOL,
+    MOUSE,
     NAVWIN,
     CMD_NUM,   // CMD+number layer
     CTRL_NUM,  // CTRL+number layer
@@ -46,7 +47,7 @@ enum custom_keycodes {
 #define QHOME_C LCTL_T(KC_C)
 #define QHOME_V LSFT_T(KC_V)
 
-#define G_BSPC LCMD_T(KC_BSPC)
+#define MOUSE_BSPC LT(MOUSE, KC_BSPC)
 
 #define QHOME_M RSFT_T(KC_M)
 #define QHOME_COMM CTL_T(KC_COMM)
@@ -61,12 +62,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
         KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                                KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                                KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        KC_LCTL,  KC_A, KC_S, KC_D, KC_F, KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        KC_LGUI,  KC_A, KC_S, KC_D, KC_F, KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), OSM(MOD_RSFT),
-            MO(NUMBER), MO(FUNCTION),                                                              KC_LBRC, KC_RBRC,
-        MO(NAV), G_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
-        QK_BOOT, KC_ESC,                                                                         KC_ENT, QK_REP,
-        XXX, MS_BTN5,                                                                            KC_F17, KC_F16
+            MS_BTN5, MS_BTN4,                                                                           KC_LBRC, KC_RBRC,
+        MO(NAV), MOUSE_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
+        KC_F17, KC_ESC,                                                                         KC_ENT, QK_REP,
+        XXX, QK_BOOT,                                                                                KC_F17, KC_F16
     ),
 
   [NAV] = LAYOUT_5x6(
@@ -102,6 +103,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______, _______,                                                                  _______, _______
     ),
 
+  [MOUSE] = LAYOUT_5x6(
+        _______, _______, _______, _______, _______, _______,                         KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
+        _______, _______, _______, _______, _______, _______,                         _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  OA_HELP,
+        _______, MS_BTN5, MS_BTN2, MS_BTN3, MS_BTN1, MS_BTN4,                         _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
+        _______, OA_UNDO, OA_CUT, OA_COPY, OA_PASTE, _______,                         _______, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE,
+                _______, _______,                                                                             KC_VOLD, KC_VOLU,
+        _______, _______,                                                                                           _______, _______,
+        _______, _______,                                                                                           _______, _______,
+        _______, _______,                                                                                           _______, _______
+    ),
+
   [NUMBER] = LAYOUT_5x6(
         _______, _______, _______, _______, _______, _______,                              _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,                              OSM(MOD_LALT),    KC_7,   KC_8,   KC_9,   KC_ASTR, _______,
@@ -111,17 +123,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
          OSM(MOD_LGUI), OSM(MOD_LCTL),                                                                             _______,_______,
             _______, _______,                                                                             _______,_______,
             _______, _______,                                                                             _______,_______
-    ),
-
-  [FUNCTION] = LAYOUT_5x6(
-        _______, C(KC_PGUP), C(KC_PGDN), _______, _______, _______,                             KC_MSEL, KC_MPLY, KC_MPRV, KC_MNXT, KC_MSTP, KC_CIRC,
-        _______, OA_CLOSE, OA_CLOSE_WIN, OA_FIND_NEXT, OA_RELOAD, OA_NEW_TAB,                            _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  OA_HELP,
-        _______, OA_SELECT_ALL, OA_SAVE, OA_BOOKMARK, OA_FIND, OA_FULLSCREEN,                   _______, KC_F4,   KC_F5,   KC_F6,   KC_F11,  KC_PSCR,
-        _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                   _______, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE,
-             _______, _______,                                                                      KC_VOLD, KC_VOLU,
-             A(KC_1), A(KC_2),                                                                     A(KC_7), A(KC_6),
-             _______, A(KC_3),                                                                     A(KC_8), _______,
-             _______, _______,                                                                     _______, _______
     ),
 };
 
@@ -150,7 +151,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case G_BSPC:
+    case MOUSE_BSPC:
       return TAPPING_TERM - 20;
     case QHOME_V:
     case QHOME_M:
@@ -200,8 +201,8 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
             }
             break;
 
-        case G_BSPC:
-            // Always force Command via chordal hold.
+        case MOUSE_BSPC:
+            // Always force the mouse layer via chordal hold.
             return true;
     }
     // Otherwise defer to the opposite hands rule.
