@@ -16,4 +16,6 @@ SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 ENCODER_ENABLE = no       # Enables the use of one or more encoders
 RGBLIGHT_ENABLE = no      # Enable keyboard RGB underglow
+# Super Leader is enabled in keymap.json; do not enable QMK's built-in leader.
+# REPEAT_KEY_ENABLE above supplies the keyrecord_t.keycode field it requires.
 LEADER_ENABLE = no

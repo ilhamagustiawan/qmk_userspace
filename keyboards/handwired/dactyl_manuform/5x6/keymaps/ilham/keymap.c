@@ -62,45 +62,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_5x6(
         KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                                KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                                KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
-        KC_LGUI,  KC_A, KC_S, KC_D, KC_F, KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
-        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), OSM(MOD_RSFT),
+        LEADER,  KC_A, KC_S, KC_D, KC_F, KC_G,                                               KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
+        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
             MS_BTN5, MS_BTN4,                                                                           KC_LBRC, KC_RBRC,
         MO(NAV), MOUSE_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
-        KC_F17, KC_ESC,                                                                         KC_ENT, QK_REP,
-        XXX, QK_BOOT,                                                                                KC_F17, KC_F16
+        KC_F17, KC_ESC,                                                                              KC_ENT, KC_F17,
+        XXX, QK_BOOT,                                                                                XXX, XXX
     ),
 
   [NAV] = LAYOUT_5x6(
         _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
-        KC_CAPS,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
-        CAPS_WORD, ALT_TAB, SW_WIN,  OSL(FUNCTION), LEADER_TMUX, MS_BTN4,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), MS_BTN5,                KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
-             _______, _______,                                                                                  PRV_TAB, NXT_TAB,
+        _______,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
+        KC_CAPS, ALT_TAB, SW_WIN, OSM(MOD_LGUI), LEADER_TMUX, CAPS_WORD,                             KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
+        _______, OA_UNDO, OA_CUT, OA_COPY, OA_PASTE, _______,                                        KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
+             _______, _______,                                                                                  MY_NAV_LEFT, MY_NAV_RIGHT,
                 _______,          _______,                                                                     _______, _______,
-                _______,          _______,                                                                 _______, _______,
+                _______,          _______,                                                                     _______, _______,
                 _______,          _______,                                                                     _______, _______
-    ),
-
-  [NAVWIN] = LAYOUT_5x6(
-        _______,  _______,  _______,  _______,  _______, _______,                                     _______, _______, _______, _______, _______, _______,
-        _______,  HYPR(KC_Q),    HYPR(KC_W), HYPR(KC_F), HYPR(KC_P), HYPR(KC_B),                      G(C(S(KC_I))), A(KC_7), A(KC_8), A(KC_9), A(KC_QUOT), _______,
-        _______,  HYPR(KC_A),    HYPR(KC_S), HYPR(KC_D), HYPR(KC_F), HYPR(KC_V),                      C(KC_M), C(KC_1), C(KC_2), C(KC_3),    A(KC_O), _______,
-        _______,  OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), OSM(MOD_LSFT), _______,                G(KC_0), G(KC_1), G(KC_2), G(KC_3), A(KC_SLSH), _______,
-                    _______, _______,                                                       _______, _______,
-              _______,          _______,                                                       _______, _______,
-              _______,          _______,                                                       _______, _______,
-              _______,          _______,                                                       _______, _______
     ),
 
   [SYMBOL] = LAYOUT_5x6(
         KC_GRV,  KC_PLUS, KC_ASTR, KC_EQL,  KC_BSLS, KC_TILD,                           _______, _______, _______, _______, _______, _______,
-        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           KC_BSPC, S(KC_TAB), KC_TAB, KC_DEL, OA_CMD_PAL, _______,
+        KC_AMPR, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_QUES,                           A(KC_BSPC), S(KC_TAB), KC_TAB, A(KC_DEL), OA_CMD_PAL, _______,
         KC_HASH, KC_CIRC, KC_MINS, KC_LPRN, KC_RPRN, KC_DLR,                            KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_COLN, _______,
         KC_QUOT, KC_DQUO, KC_UNDS, KC_LBRC, KC_RBRC, KC_PERC,                           KC_F18, OSM(MOD_RSFT), KC_RCTL, KC_RALT, KC_RGUI, _______,
-                _______, _______,                                                                    MY_NAV_LEFT, MY_NAV_RIGHT,
-                OSL(CMD_NUM), OSL(CMD_NUM),                                                                  _______, _______,
-                OS_MODE_TOG, _______,                                                                  _______, _______,
-                _______, _______,                                                                  _______, _______
+                _______, _______,                                                                    S(KC_TAB), KC_TAB,
+                _______, _______,                                                                    _______, _______,
+                _______, _______,                                                                    _______, _______,
+                _______, _______,                                                                    _______, _______
     ),
 
   [MOUSE] = LAYOUT_5x6(

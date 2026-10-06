@@ -1,0 +1,8 @@
+// Tap and release LEADER, then tap the input keys in order (not a chord).
+// Format: SEQ_*(unique_name, (input_keys...), output)
+
+// Bind Hyper+B to open the browser in your OS/launcher.
+SEQ_KEY(browser_open,   (KC_B), HYPR(KC_B))
+
+// LEADER alone intentionally does nothing: no empty-sequence fallback.
+// Keep credentials and other secrets out of string macros.

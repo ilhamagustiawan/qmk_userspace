@@ -6,8 +6,12 @@
 // partial fix to slow down the rate at which macros are sent.
 #define TAP_CODE_DELAY 5
 
+// Super Leader: maximum pause between sequence keys (milliseconds).
+// Unambiguous sequences fire immediately; this is not an execution delay.
+#define SUPER_LEADER_TIMEOUT 1000
+
 // Tap-hold configuration for home row mods.
-#define TAPPING_TERM 175
+#define TAPPING_TERM 150
 #define TAPPING_TERM_PER_KEY
 #define FLOW_TAP_TERM 100
 #define CHORDAL_HOLD
