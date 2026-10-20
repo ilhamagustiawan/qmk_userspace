@@ -50,9 +50,11 @@ enum custom_keycodes {
 #define MOUSE_BSPC LT(MOUSE, KC_BSPC)
 
 #define QHOME_M RSFT_T(KC_M)
-#define QHOME_COMM CTL_T(KC_COMM)
-#define QHOME_DOT ALT_T(KC_DOT)
+#define QHOME_COMM RCTL_T(KC_COMM)
+#define QHOME_DOT RALT_T(KC_DOT)
 #define QHOME_SCLN LGUI_T(KC_SCLN)
+#define QHOME_SLSH RGUI_T(KC_SLSH)
+
 
 #define CAPS_WORD QK_CAPS_WORD_TOGGLE
 
@@ -63,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_EQL, KC_1, KC_2, KC_3, KC_4, KC_5,                                                KC_6,    KC_7,    KC_8,    KC_9,      KC_0,            KC_MINS,
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T,                                                KC_Y,    KC_U,    KC_I,    KC_O,      KC_P,            KC_BSLS,
         LEADER,  KC_A, KC_S, KC_D, KC_F, KC_G,                                               KC_H,    KC_J,    KC_K,    KC_L,      QHOME_SCLN,      KC_QUOT,
-        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, HYPR_T(KC_SLSH), QK_REP,
+        OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, QHOME_SLSH, QK_REP,
             MS_BTN5, MS_BTN4,                                                                           KC_LBRC, KC_RBRC,
         MO(NAV), MOUSE_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
         KC_F17, KC_ESC,                                                                              KC_ENT, KC_F17,
