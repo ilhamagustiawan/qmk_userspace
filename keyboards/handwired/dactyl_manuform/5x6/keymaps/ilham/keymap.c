@@ -51,9 +51,9 @@ enum custom_keycodes {
 
 #define QHOME_M RSFT_T(KC_M)
 #define QHOME_COMM RCTL_T(KC_COMM)
-#define QHOME_DOT RALT_T(KC_DOT)
-#define QHOME_SCLN LGUI_T(KC_SCLN)
 #define QHOME_SLSH RGUI_T(KC_SLSH)
+#define QHOME_DOT ALT_T(KC_DOT)
+#define QHOME_SCLN LGUI_T(KC_SCLN)
 
 
 #define CAPS_WORD QK_CAPS_WORD_TOGGLE
@@ -68,8 +68,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LSFT), QHOME_Z, QHOME_X, QHOME_C, QHOME_V, KC_B,                             KC_N, QHOME_M, QHOME_COMM, QHOME_DOT, QHOME_SLSH, QK_REP,
             MS_BTN5, MS_BTN4,                                                                           KC_LBRC, KC_RBRC,
         MO(NAV), MOUSE_BSPC,                                                                         LT(NUMBER, KC_SPC), MO(SYMBOL),
-        KC_F17, KC_ESC,                                                                              KC_ENT, KC_F17,
-        XXX, QK_BOOT,                                                                                XXX, XXX
+        KC_F17, KC_ESC,                                                                              KC_ENT, QK_REP,
+        XXX, QK_BOOT,                                                                                KC_RALT, XXX
     ),
 
   [NAV] = LAYOUT_5x6(
@@ -161,14 +161,17 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record,
     switch (keycode) {
       case QHOME_Z:
       case QHOME_X:
-      case QHOME_C:
       case QHOME_SCLN:
       case QHOME_DOT:
       case QHOME_COMM:
-        return FLOW_TAP_TERM;
-      case QHOME_V:
+        return FLOW_TAP_TERM + 10;
+
       case QHOME_M:
-        return FLOW_TAP_TERM - 25;
+        return FLOW_TAP_TERM - 10;
+
+      case QHOME_V:
+      case QHOME_C:
+        return FLOW_TAP_TERM + 20;
     }
   }
   return 0;
