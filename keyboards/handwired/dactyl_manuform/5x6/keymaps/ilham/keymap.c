@@ -37,6 +37,7 @@ enum custom_keycodes {
     OA_NEW_TAB,    // OS-aware new tab
     OA_CLOSE_WIN,  // Close window (Cmd+W / Ctrl+W)
     SW_WIN,        // Window switcher within app (Cmd+`)
+    NAV_W,         // Ctrl+W, or Cmd+W while Cmd-Tab is active
     PRV_TAB,       // Previous tab (Ctrl+Shift+Tab)
     NXT_TAB,       // Next tab (Ctrl+Tab)
 };
@@ -74,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [NAV] = LAYOUT_5x6(
         _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
-        KC_CAPS,  _______,  C(KC_W),  _______, _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
+        KC_CAPS,  _______,  NAV_W,    _______,  _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
         CAPS_WORD, ALT_TAB, SW_WIN, OSM(MOD_LGUI), LEADER_TMUX, _______,                             KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
         _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), KC_RSFT, _______,                      KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
              _______, _______,                                                                                  MY_NAV_LEFT, MY_NAV_RIGHT,
@@ -421,17 +422,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         send_mac_or_win(G(KC_W), C(KC_W), record->event.pressed);
         return false;
 
-    case SW_WIN:
+    case SW_WIN: {
+        static bool sw_win_sent_s = false;
         if (record->event.pressed) {
+            if (is_alt_tab_active) {
+                sw_win_sent_s = true;
+                register_code(KC_S);
+                return false;
+            }
             if (!is_sw_win_active) {
                 is_sw_win_active = true;
                 register_code(KC_LGUI);
             }
             register_code(KC_GRV);
         } else {
-            unregister_code(KC_GRV);
+            if (sw_win_sent_s) {
+                unregister_code(KC_S);
+                sw_win_sent_s = false;
+            } else {
+                unregister_code(KC_GRV);
+            }
         }
         return false;
+    }
+
+    case NAV_W: {
+        static bool nav_w_sent_w = false;
+        if (record->event.pressed) {
+            if (is_alt_tab_active) {
+                nav_w_sent_w = true;
+                register_code(KC_W);
+            } else {
+                register_code16(C(KC_W));
+            }
+        } else {
+            if (nav_w_sent_w) {
+                unregister_code(KC_W);
+                nav_w_sent_w = false;
+            } else {
+                unregister_code16(C(KC_W));
+            }
+        }
+        return false;
+    }
 
     case PRV_TAB:
         if (record->event.pressed) {
