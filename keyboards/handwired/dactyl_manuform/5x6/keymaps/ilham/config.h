@@ -11,12 +11,14 @@
 #define SUPER_LEADER_TIMEOUT 1000
 
 // Tap-hold configuration for home row mods.
-#define TAPPING_TERM 170
+#define TAPPING_TERM 160
 #define TAPPING_TERM_PER_KEY
 #define FLOW_TAP_TERM 100
 #define CHORDAL_HOLD
 #define PERMISSIVE_HOLD
 #define SPECULATIVE_HOLD
+#define SPECULATIVE_HOLD_ONE_KEY
+#define SPECULATIVE_HOLD_FLOW_TERM 200
 #define QUICK_TAP_TERM_PER_KEY
 
 #define NO_ACTION_MACRO

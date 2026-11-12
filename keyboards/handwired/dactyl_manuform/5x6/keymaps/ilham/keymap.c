@@ -145,12 +145,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case MOUSE_BSPC:
       return TAPPING_TERM - 20;
-    case QHOME_C:
-      return TAPPING_TERM + 30;
     case QHOME_V:
-      return TAPPING_TERM;
     case QHOME_M:
-      return TAPPING_TERM - 20;
+      return TAPPING_TERM - 30;
     default:
       return TAPPING_TERM;
   }
@@ -167,16 +164,12 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record,
       case QHOME_X:
       case QHOME_SCLN:
       case QHOME_DOT:
-      case QHOME_COMM:
-        return FLOW_TAP_TERM + 10;
+      case QHOME_SLSH:
+        return FLOW_TAP_TERM;
 
-      case QHOME_M:
-        return FLOW_TAP_TERM - 10;
-
-      case QHOME_V:
-        return FLOW_TAP_TERM + 30;
       case QHOME_C:
-        return FLOW_TAP_TERM + 50;
+      case QHOME_COMM:
+        return FLOW_TAP_TERM - 25;
     }
   }
   return 0;
