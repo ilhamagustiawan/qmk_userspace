@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
         KC_CAPS,  _______,  NAV_W,    _______,  _______, _______,                                     G(A(KC_LEFT)), C(KC_PGDN),C(KC_PGUP), G(A(KC_RGHT)), OA_CMD_PAL, _______,
         CAPS_WORD, ALT_TAB, SW_WIN, OSM(MOD_LGUI), LEADER_TMUX, _______,                             KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CAPS_WORD, _______,
-        _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), KC_RSFT, _______,                      KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
+        _______, OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), KC_RSFT, C(KC_B),                      KC_HOME, KC_PGDN, KC_PGUP, KC_END, QK_REP, _______,
              _______, _______,                                                                                  MY_NAV_LEFT, MY_NAV_RIGHT,
                 _______,          _______,                                                                     _______, _______,
                 _______,          _______,                                                                     _______, _______,
